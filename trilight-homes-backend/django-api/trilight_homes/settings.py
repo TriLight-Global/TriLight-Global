@@ -46,7 +46,9 @@ INSTALLED_APPS = [
     'analytics',
     'documentation',
     'tenants',
-    'restframwork'
+    'rest_framework',
+    'drf_spectacular',
+    'drf_spectacular_sidecar',
 ]
 
 MIDDLEWARE = [
@@ -60,6 +62,21 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'trilight_homes.urls'
+
+REST_FRAMEWORK = {
+        'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Your API Title',
+    'DESCRIPTION': 'A description for your API.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SWAGGER_UI_DIST': 'SIDECAR',
+    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
+    'REDOC_DIST': 'SIDECAR',
+    'COMPONENT_SPLIT_REQUEST': True,
+}
 
 TEMPLATES = [
     {
@@ -77,16 +94,46 @@ TEMPLATES = [
     },
 ]
 
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
 WSGI_APPLICATION = 'trilight_homes.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+# Import MongoClient from pymongo
+from pymongo import MongoClient
+
+# MongoDB settings
+MONGO_DATABASE_NAME = 'trilight-homes-db'
+MONGO_CLIENT = MongoClient(
+    host='localhost',
+    port=27017,
+    username='',  # Add if you have authentication
+    password='',  # Add if you have authentication
+    authSource='admin',  # Default auth database if required
+    authMechanism='SCRAM-SHA-1'  # Default auth mechanism if required
+)
+
+# Get the database instance
+mongo_db = MONGO_CLIENT[MONGO_DATABASE_NAME]
+
+# Optionally, keep the DATABASES configuration for any relational database (e.g., for admin users, auth, etc.)
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.sqlite3',  # Or 'postgresql', 'mysql', etc.
+        'NAME': BASE_DIR / 'db.sqlite3',  # Or other relevant db name if needed
     }
 }
 
