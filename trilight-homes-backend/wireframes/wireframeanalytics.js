@@ -31,7 +31,7 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 export default function WireframeLaptopAnalytics() {
   return (
     <div className="bg-gray-100 p-4 font-sans">
-      <header className="bg-blue-600 text-white p-4 flex justify-between items-center">
+      <header className="bg-blue-600 text-white p-4 flex justify-between items-center rounded-t-lg">
         <h1 className="text-2xl font-bold">TriLight Homes Analytics</h1>
         <nav className="flex space-x-4">
           <a href="#" className="hover:text-blue-200">Dashboard</a>
@@ -41,9 +41,9 @@ export default function WireframeLaptopAnalytics() {
         </nav>
       </header>
       
-      <main className="mt-6">
-        <div className="grid grid-cols-2 gap-6">
-          <section className="bg-white rounded-lg shadow-md p-4">
+      <main className="mt-6 bg-white rounded-lg shadow-lg p-6">
+        <div className="grid grid-cols-2 gap-6 mb-6">
+          <section className="bg-blue-100 rounded-lg p-4">
             <h2 className="text-xl font-semibold mb-4">Property Transactions</h2>
             <BarChart width={500} height={300} data={propertyData}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -56,7 +56,7 @@ export default function WireframeLaptopAnalytics() {
             </BarChart>
           </section>
           
-          <section className="bg-white rounded-lg shadow-md p-4">
+          <section className="bg-green-100 rounded-lg p-4">
             <h2 className="text-xl font-semibold mb-4">Market Trends</h2>
             <LineChart width={500} height={300} data={marketTrends}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -67,8 +67,10 @@ export default function WireframeLaptopAnalytics() {
               <Line type="monotone" dataKey="price" stroke="#8884d8" />
             </LineChart>
           </section>
-          
-          <section className="bg-white rounded-lg shadow-md p-4">
+        </div>
+        
+        <div className="grid grid-cols-2 gap-6">
+          <section className="bg-yellow-100 rounded-lg p-4">
             <h2 className="text-xl font-semibold mb-4">Property Types</h2>
             <PieChart width={400} height={300}>
               <Pie
@@ -90,22 +92,22 @@ export default function WireframeLaptopAnalytics() {
             </PieChart>
           </section>
           
-          <section className="bg-white rounded-lg shadow-md p-4">
+          <section className="bg-purple-100 rounded-lg p-4">
             <h2 className="text-xl font-semibold mb-4">Key Metrics</h2>
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-blue-100 p-4 rounded">
+              <div className="bg-white p-4 rounded shadow">
                 <h3 className="text-lg font-semibold">Total Properties</h3>
                 <p className="text-3xl font-bold text-blue-600">1,234</p>
               </div>
-              <div className="bg-green-100 p-4 rounded">
+              <div className="bg-white p-4 rounded shadow">
                 <h3 className="text-lg font-semibold">Avg. Sale Price</h3>
                 <p className="text-3xl font-bold text-green-600">$350,000</p>
               </div>
-              <div className="bg-yellow-100 p-4 rounded">
+              <div className="bg-white p-4 rounded shadow">
                 <h3 className="text-lg font-semibold">Active Listings</h3>
                 <p className="text-3xl font-bold text-yellow-600">567</p>
               </div>
-              <div className="bg-purple-100 p-4 rounded">
+              <div className="bg-white p-4 rounded shadow">
                 <h3 className="text-lg font-semibold">Avg. Days on Market</h3>
                 <p className="text-3xl font-bold text-purple-600">45</p>
               </div>
