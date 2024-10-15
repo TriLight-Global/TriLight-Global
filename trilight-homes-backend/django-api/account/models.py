@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import AbstractUser
 
 # # Create your models here.
 # class UserProfile(models.Model):
@@ -27,6 +28,18 @@ from django.utils.translation import gettext_lazy as _
 # Tenants
 # Partners
 
+class User(AbstractUser):
+    ROLES = (
+        ('VISITOR', 'Visitor'),
+        ('REGISTERED', 'Registered User'),
+        ('AGENT', 'Agent'),
+        ('OWNER', 'Property Owner'),
+        ('DEVELOPER', 'Developer'),
+        ('ADMIN', 'Admin')
+    )
+    role = models.CharField(max_length=20, choices=ROLES, default='VISITOR')
+    phone = models.CharField(max_length=20, blank=True)
+    profile_picture = models.ImageField(upload_to='profile_pics/', blank=True)
 
 class Agent(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -46,3 +59,12 @@ class Agency(models.Model):
 
     def __str__(self):
         return self.name
+
+# class Task(models.Model):
+#     project = models.ForeignKey(Project, on_delete=models.CASCADE)
+#     name = models.CharField(max_length=255)
+#     description = models.TextField()
+#     assigned_to = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+#     status = models.CharField(max_length=20)
+#     due_date = models.DateField()
+

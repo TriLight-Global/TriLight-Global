@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'maintenance',
     'properties',
     'transactions',
-    'analytics',
+    'notifications',
     'documentation',
     'tenants',
     'rest_framework',
@@ -130,12 +130,12 @@ MONGO_CLIENT = MongoClient(
 mongo_db = MONGO_CLIENT[MONGO_DATABASE_NAME]
 
 # Optionally, keep the DATABASES configuration for any relational database (e.g., for admin users, auth, etc.)
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',  # Or 'postgresql', 'mysql', etc.
-        'NAME': BASE_DIR / 'db.sqlite3',  # Or other relevant db name if needed
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',  # Or 'postgresql', 'mysql', etc.
+#         'NAME': BASE_DIR / 'db.sqlite3',  # Or other relevant db name if needed
+#     }
+# }
 
 
 # Password validation

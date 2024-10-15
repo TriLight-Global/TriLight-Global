@@ -1,52 +1,53 @@
 #analytics models
-from flask_sqlalchemy import SQLAlchemy
+# from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.postgresql import ARRAY, JSON
+from pymongo import MongoClient
 
-db = SQLAlchemy()
+client = MongoClient()
 
-class PropertyAnalytics(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    property_id = db.Column(db.Integer, db.ForeignKey('property.id'))
-    views = db.Column(db.Integer, default=0)
-    favorites = db.Column(db.Integer, default=0)
-    last_price_change = db.Column(db.DateTime)
-    days_on_market = db.Column(db.Integer)
+class PropertyAnalytics(client.Model):
+    id = client.Column(client.Integer, primary_key=True)
+    property_id = client.Column(client.Integer, client.ForeignKey('property.id'))
+    views = client.Column(client.Integer, default=0)
+    favorites = client.Column(client.Integer, default=0)
+    last_price_change = client.Column(client.DateTime)
+    days_on_market = client.Column(client.Integer)
 
-class MarketTrend(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    location = db.Column(db.String(255))
-    property_type = db.Column(db.String(50))
-    date = db.Column(db.Date)
-    average_price = db.Column(db.Numeric(12, 2))
-    median_price = db.Column(db.Numeric(12, 2))
-    total_listings = db.Column(db.Integer)
-    days_on_market_avg = db.Column(db.Float)
+class MarketTrend(client.Model):
+    id = client.Column(client.Integer, primary_key=True)
+    location = client.Column(client.String(255))
+    property_type = client.Column(client.String(50))
+    date = client.Column(client.Date)
+    average_price = client.Column(client.Numeric(12, 2))
+    median_price = client.Column(client.Numeric(12, 2))
+    total_listings = client.Column(client.Integer)
+    days_on_market_avg = client.Column(client.Float)
 
-class PropertyValuation(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    property_id = db.Column(db.Integer, db.ForeignKey('property.id'))
-    estimated_value = db.Column(db.Numeric(12, 2))
-    confidence_score = db.Column(db.Float)
-    last_updated = db.Column(db.DateTime)
-    comparable_properties = db.Column(ARRAY(db.Integer))
+class PropertyValuation(client.Model):
+    id = client.Column(client.Integer, primary_key=True)
+    property_id = client.Column(client.Integer, client.ForeignKey('property.id'))
+    estimated_value = client.Column(client.Numeric(12, 2))
+    confidence_score = client.Column(client.Float)
+    last_updated = client.Column(client.DateTime)
+    comparable_properties = client.Column(ARRAY(client.Integer))
 
-class SearchLog(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
-    search_params = db.Column(JSON)
-    results_count = db.Column(db.Integer)
-    timestamp = db.Column(db.DateTime)
+class SearchLog(client.Model):
+    id = client.Column(client.Integer, primary_key=True)
+    user_id = client.Column(client.Integer, client.ForeignKey('user.id'), nullable=True)
+    search_params = client.Column(JSON)
+    results_count = client.Column(client.Integer)
+    timestamp = client.Column(client.DateTime)
 
-class PerformanceMetric(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    metric_name = db.Column(db.String(100))
-    metric_value = db.Column(db.Float)
-    timestamp = db.Column(db.DateTime)
+class PerformanceMetric(client.Model):
+    id = client.Column(client.Integer, primary_key=True)
+    metric_name = client.Column(client.String(100))
+    metric_value = client.Column(client.Float)
+    timestamp = client.Column(client.DateTime)
 
 # This model would be used to cache complex query results
-class QueryCache(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    query_hash = db.Column(db.String(64), unique=True)
-    result = db.Column(JSON)
-    created_at = db.Column(db.DateTime)
-    expires_at = db.Column(db.DateTime)
+class QueryCache(client.Model):
+    id = client.Column(client.Integer, primary_key=True)
+    query_hash = client.Column(client.String(64), unique=True)
+    result = client.Column(JSON)
+    created_at = client.Column(client.DateTime)
+    expires_at = client.Column(client.DateTime)

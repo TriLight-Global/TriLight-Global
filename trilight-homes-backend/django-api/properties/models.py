@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
+from django.contrib.postgres.fields import ArrayField
 import uuid
 
 from account.models import Agent, Agency
@@ -34,7 +35,6 @@ class PropertyType(models.IntegerChoices):
     INDUSTRIAL_LAND = 16, _("Industrial Land")
 
 # Property Status Choices
-
 class PropertyStatus(models.IntegerChoices):
     FOR_SALE = 1, _("For Sale")
     SOLD = 2, _("Sold")
@@ -49,7 +49,6 @@ class PropertyCondition(models.IntegerChoices):
     RENOVATED = 3, _("Renovated")
 
 # Property Model
-
 class Property(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     title = models.CharField(_("Title"), max_length=200)
@@ -69,6 +68,8 @@ class Property(models.Model):
     created_at = models.DateTimeField(_("Created At"), auto_now_add=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='properties')
     featured = models.BooleanField(_("Featured"), default=False)
+    features = ArrayField(models.CharField(max_length=100), blank=True)
+    virtual_tour_url = models.URLField(blank=True)
     published = models.BooleanField(_("Published"), default=False)
     attributes = models.ManyToManyField('PropertyAttribute', through='PropertyAttributeAssignment')
     agents = models.ManyToManyField(Agent, related_name='listed_properties')
@@ -165,3 +166,20 @@ class PropertyImage(models.Model):
 
     def __str__(self):
         return f"Image for {self.property.title}: {'Primary' if self.is_primary else 'Secondary'}"
+
+class SavedSearch(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    search_params = models.JSONField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+class FavoriteProperty(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    property = models.ForeignKey(Property, on_delete=models.CASCADE)
+    added_at = models.DateTimeField(auto_now_add=True)
+
+class Viewing(models.Model):
+    property = models.ForeignKey(Property, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    agent = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='agent_viewings')
+    date_time = models.DateTimeField()
+    status = models.CharField(max_length=20)

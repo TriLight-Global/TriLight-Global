@@ -11,3 +11,10 @@
 
 #     def __str__(self):
 #         return f"{self.transaction_type.capitalize()} of {self.property.title} on {self.date}"
+
+# class RentPayment(models.Model):
+#     tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE)
+#     property = models.ForeignKey(Property, on_delete=models.CASCADE)
+#     amount = models.DecimalField(max_digits=10, decimal_places=2)
+#     date = models.DateField()
+#     status = models.CharField(max_length=20)

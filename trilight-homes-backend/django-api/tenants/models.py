@@ -1,3 +1,6 @@
-from django.db import models
+# from django.db import models
 
-# Create your models here.
+# class Tenant(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE)
+#     current_property = models.ForeignKey(Property, on_delete=models.SET_NULL, null=True)
+
