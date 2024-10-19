@@ -15,7 +15,6 @@ class Currency(models.IntegerChoices):
     GHC = 5, _("Ghana Cedis")
 
 # Property Types Choices
-
 class PropertyType(models.IntegerChoices):
     STUDIO_APARTMENT = 1, _("Studio Apartment")
     LOFT_APARTMENT = 2, _("Loft Apartment")
