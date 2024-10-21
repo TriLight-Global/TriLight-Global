@@ -1,53 +1,65 @@
-#analytics models
-# from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.postgresql import ARRAY, JSON
-from pymongo import MongoClient
+from datetime import datetime
 
-client = MongoClient()
+db = SQLAlchemy()
 
-class PropertyAnalytics(client.Model):
-    id = client.Column(client.Integer, primary_key=True)
-    property_id = client.Column(client.Integer, client.ForeignKey('property.id'))
-    views = client.Column(client.Integer, default=0)
-    favorites = client.Column(client.Integer, default=0)
-    last_price_change = client.Column(client.DateTime)
-    days_on_market = client.Column(client.Integer)
+class PropertyAnalytics(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    property_id = db.Column(db.Integer, unique=True, nullable=False)
+    views_count = db.Column(db.Integer, default=0)
+    favorites_count = db.Column(db.Integer, default=0)
+    search_appearances = db.Column(db.Integer, default=0)
+    last_price_change = db.Column(db.DateTime)
+    days_on_market = db.Column(db.Integer)
+    last_updated = db.Column(db.DateTime, default=datetime.utcnow)
 
-class MarketTrend(client.Model):
-    id = client.Column(client.Integer, primary_key=True)
-    location = client.Column(client.String(255))
-    property_type = client.Column(client.String(50))
-    date = client.Column(client.Date)
-    average_price = client.Column(client.Numeric(12, 2))
-    median_price = client.Column(client.Numeric(12, 2))
-    total_listings = client.Column(client.Integer)
-    days_on_market_avg = client.Column(client.Float)
+class MarketTrend(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    area = db.Column(db.String(255), nullable=False)
+    property_type = db.Column(db.String(50), nullable=False)
+    average_price = db.Column(db.Numeric(12, 2))
+    median_price = db.Column(db.Numeric(12, 2))
+    price_change_percentage = db.Column(db.Numeric(5, 2))
+    total_listings = db.Column(db.Integer)
+    inventory_level = db.Column(db.Integer)
+    days_on_market_avg = db.Column(db.Float)
+    date = db.Column(db.Date, nullable=False)
 
-class PropertyValuation(client.Model):
-    id = client.Column(client.Integer, primary_key=True)
-    property_id = client.Column(client.Integer, client.ForeignKey('property.id'))
-    estimated_value = client.Column(client.Numeric(12, 2))
-    confidence_score = client.Column(client.Float)
-    last_updated = client.Column(client.DateTime)
-    comparable_properties = client.Column(ARRAY(client.Integer))
+class PerformanceMetric(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    property_id = db.Column(db.Integer, nullable=False)
+    metric_name = db.Column(db.String(100), nullable=False)
+    metric_value = db.Column(db.Float)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
-class SearchLog(client.Model):
-    id = client.Column(client.Integer, primary_key=True)
-    user_id = client.Column(client.Integer, client.ForeignKey('user.id'), nullable=True)
-    search_params = client.Column(JSON)
-    results_count = client.Column(client.Integer)
-    timestamp = client.Column(client.DateTime)
+class AnalyticsReport(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    report_type = db.Column(db.String(50), nullable=False)
+    generated_at = db.Column(db.DateTime, default=datetime.utcnow)
+    data = db.Column(JSON)
+    filters = db.Column(JSON)
 
-class PerformanceMetric(client.Model):
-    id = client.Column(client.Integer, primary_key=True)
-    metric_name = client.Column(client.String(100))
-    metric_value = client.Column(client.Float)
-    timestamp = client.Column(client.DateTime)
+class PropertyRecommendation(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, nullable=False)
+    property_id = db.Column(db.Integer, nullable=False)
+    score = db.Column(db.Float)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-# This model would be used to cache complex query results
-class QueryCache(client.Model):
-    id = client.Column(client.Integer, primary_key=True)
-    query_hash = client.Column(client.String(64), unique=True)
-    result = client.Column(JSON)
-    created_at = client.Column(client.DateTime)
-    expires_at = client.Column(client.DateTime)
+class UserAnalytics(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, unique=True, nullable=False)
+    total_properties_viewed = db.Column(db.Integer, default=0)
+    total_inquiries_made = db.Column(db.Integer, default=0)
+    total_favorites = db.Column(db.Integer, default=0)
+    last_login = db.Column(db.DateTime)
+    account_creation_date = db.Column(db.DateTime, nullable=False)
+
+class SearchAnalytics(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer)
+    search_query = db.Column(db.Text)
+    filters_used = db.Column(JSON)
+    results_count = db.Column(db.Integer)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
