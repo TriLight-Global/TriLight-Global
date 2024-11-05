@@ -1,0 +1,96 @@
+````mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#f0f8ff',
+    'primaryTextColor': '#333',
+    'primaryBorderColor': '#7C0080',
+    'lineColor': '#7C0080',
+    'secondaryColor': '#fdf5e6',
+    'tertiaryColor': '#e6e6fa'
+  }
+}}%%
+graph TD
+    A[User Visits Website/Opens App] --> B{Registered User?}
+    B -->|Yes| C[Login]
+    B -->|No| D[Browse as Guest]
+
+    C --> E[View Personalized Dashboard]
+    D --> F[View Home Page]
+    E --> F
+
+    F --> G{Choose Action}
+    G --> H[Browse Products]
+    G --> I[Use Search]
+    G --> J[View Deals]
+    G --> K[Check Store Locations]
+
+    H --> L{Apply Filters?}
+    L -->|Yes| M[Set Filters]
+    L -->|No| N[View Product List]
+    M --> N
+    I --> N
+
+    N --> O[View Product Details]
+    O --> P{Add to Cart?}
+    P -->|Yes| Q[Add to Cart]
+    P -->|No| R{Continue Shopping?}
+    Q --> R
+    R -->|Yes| G
+    R -->|No| S[View Cart]
+
+    S --> T{Modify Cart?}
+    T -->|Yes| U[Update Cart Items]
+    T -->|No| V{Proceed to Checkout?}
+    U --> S
+    V -->|Yes| W[Select Delivery Method]
+    V -->|No| G
+
+    W --> X[Enter Shipping Details]
+    X --> Y[Select Payment Method]
+    Y --> Z[Process Payment]
+    Z --> AA[Order Confirmation]
+
+    J --> O
+    K --> AB[View Store Information]
+
+    G --> AC[Access Account]
+    AC --> AD[View Order History]
+    AC --> AE[Manage Addresses]
+    AC --> AF[Update Profile]
+
+    G --> AG{Need Assistance?}
+    AG -->|Yes| AH[Open Chat Support]
+    AG -->|No| G
+
+    %% Admin Flow
+    AI[Admin Login] --> AJ[Access Admin Dashboard]
+    AJ --> AK[View Analytics]
+    AJ --> AL[Manage Inventory]
+    AJ --> AM[Process Orders]
+    AJ --> AN[Generate Reports]
+
+    %% Inventory Manager Flow
+    AO[Inventory Manager Login] --> AP[Access Inventory Dashboard]
+    AP --> AQ[Update Stock Levels]
+    AP --> AR[Set Reorder Points]
+    AP --> AS[Manage Inter-store Transfers]
+
+    %% Marketing Manager Flow
+    AT[Marketing Manager Login] --> AU[Access Marketing Dashboard]
+    AU --> AV[Create Promotions]
+    AU --> AW[Segment Customers]
+    AU --> AX[Analyze Customer Behavior]
+
+    %% Store Employee Flow
+    AY[Store Employee Login] --> AZ[Access POS System]
+    AZ --> BA[Process In-store Sales]
+    AZ --> BB[Manage Pickups]
+    AZ --> BC[Update Local Inventory]
+
+    classDef default fill:#f0f8ff,stroke:#7C0080,stroke-width:2px;
+    classDef decision fill:#fdf5e6,stroke:#7C0080,stroke-width:2px;
+    classDef action fill:#e6e6fa,stroke:#7C0080,stroke-width:2px;
+    class B,L,P,R,T,V,AG decision;
+    class C,D,E,F,H,I,J,K,M,N,O,Q,S,U,W,X,Y,Z,AA,AB,AC,AD,AE,AF,AH,AJ,AK,AL,AM,AN,AP,AQ,AR,AS,AU,AV,AW,AX,AZ,BA,BB,BC action;
+````
